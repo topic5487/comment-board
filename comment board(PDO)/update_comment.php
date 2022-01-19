@@ -3,15 +3,16 @@ session_start();
 require_once("connect.php");
 require_once("utility.php");
 $username = NULL;
-$user=NULL;
-
+$user = NULL;
+$id = $_GET['id'];
 if(!empty($_SESSION['username'])){
     $username = $_SESSION['username'];
     $user = getUserFromUsername($username);
 }
-$statement = $conn->prepare("SELECT C.id as id, C.content as content, C.created_at as created_at, U.nickname as nickname, U.username as username FROM comments as C left join users as U on C.user_id = U.username WHERE C.deleted_date IS NULL  ORDER BY C.id DESC");
+$statement = $conn->prepare("SELECT * FROM comments WHERE `id` = :id");
+$statement->bindParam('id', $id, PDO::PARAM_INT);
 $result = $statement->execute();
-
+$row = $statement->fetch(PDO::FETCH_ASSOC);
 if(!$result){
     die($conn->errorInfo());
 }
@@ -83,36 +84,14 @@ if(!$result){
             ?>
             <?php //設定登入才能留言
             if ($username) { ?>
-            <form class="new_comment" method="POST" action="handle_add_comment.php">
-                <textarea name="content" rows="5"></textarea>
+            <form class="new_comment" method="POST" action="handle_update_comment.php">
+                <textarea name="content" rows="5"><?php echo $row['content'] ?></textarea>
+                <input type="hidden" name="id" value="<?php echo $row['id']?>" />
                 <input class="submit_btn" type="submit" />
             </form>
             <?php }else { ?>
                 <h3>請登入開啟留言功能</h3>
             <?php } ?>
-            <div class="board_hr"></div>
-            <section>
-                <?php
-                while($row = $statement->fetch(PDO::FETCH_ASSOC)){
-                ?>
-                <div class="comment_user">
-                    <div class="comment_user_avater">
-                    </div>
-                    <div class="comment_user_body">
-                        <div class="comment_user_info">
-                        <span class="comment_author"><?php echo $row['nickname'] ?></span>
-                        <span><?php echo $row['created_at'] ?></span>
-                        <!--//判斷是否為自己的留言 才顯示編輯刪除-->
-                        <?php if ($row['username'] === $username) { ?>
-                        <a class="update_comment" href="update_comment.php?id=<?php echo $row['id'] ?>">編輯</a>
-                        <a class="update_comment" href="handle_delete_comment.php?id=<?php echo $row['id'] ?>">刪除</a>
-                        <?php } ?>
-                        </div>
-                        <p class="comment_user_content"><?php echo escape($row['content']) ?>
-                    </div>
-                </div>
-                <?php } ?>
-            </section>
         </main>
         <!-- Bootstrap core JS-->
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>

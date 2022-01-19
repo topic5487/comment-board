@@ -137,6 +137,9 @@ body {
   align-items: center;
   margin: auto
 }
+.update_comment{
+  color: white;
+}
 hr {
   margin: 1rem 0;
   color: inherit;
