@@ -9,7 +9,20 @@ if(!empty($_SESSION['username'])){
     $username = $_SESSION['username'];
     $user = getUserFromUsername($username);
 }
-$statement = $conn->prepare("SELECT C.id as id, C.content as content, C.created_at as created_at, U.nickname as nickname, U.username as username FROM comments as C left join users as U on C.user_id = U.username WHERE C.deleted_date IS NULL  ORDER BY C.id DESC");
+//$pageNow = 1; //設定起始頁數
+$pageSize = 10; //每頁顯示五條留言
+
+if (!isset($_GET["page"])){ //假如$_GET["page"]未設置
+    $pageNow=1; //則在此設定起始頁
+} else {
+    $pageNow = intval($_GET["page"]);
+}
+$pageStart = ($pageNow - 1) * $pageSize; //每一頁開始的資料序號
+
+$statement = $conn->prepare("SELECT C.id as id, C.content as content, C.created_at as created_at, U.nickname as nickname, U.username as username FROM comments as C left join users as U on C.user_id = U.username WHERE C.deleted_date IS NULL  ORDER BY C.id DESC LIMIT :pageSize OFFSET :pageStart");
+
+$statement->bindParam(':pageSize', $pageSize, PDO::PARAM_INT);
+$statement->bindParam(':pageStart', $pageStart, PDO::PARAM_INT);
 $result = $statement->execute();
 
 if(!$result){
@@ -113,7 +126,32 @@ if(!$result){
                 </div>
                 <?php } ?>
             </section>
+            <div>
+            <?php
+                $statement = $conn->prepare('SELECT count(id) AS count FROM comments WHERE deleted_date IS NULL');
+                $result = $statement->execute();
+                $row = $statement->fetch(PDO::FETCH_ASSOC);
+                $count=$row['count'];
+                $pages = ceil($count / $pageSize);
+            ?>
+            </div>
         </main>
+        <div class='page-info'>
+            <?php
+            echo "共有". $row['count'] . "筆留言-目前在第" .$pageNow. "頁 -共" .$pages. "頁";
+            ?>
+        </div>
+        <div class='pagebtn'>
+            <?php
+            echo "<br /><a href=index.php?page=1>首頁</a> ";
+            for( $i=1; $i<=$pages; $i++ ) {
+                if ( $pageNow-5 < $i && $i < $pageNow+5 ){
+                    echo "<a href=index.php?page=".$i.">".$i."</a> ";
+                }
+            }
+            echo "<a href=index.php?page=". $pages .">末頁</a><br /><br />";
+            ?>
+            </div>
         <!-- Bootstrap core JS-->
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
         <!-- Core theme JS-->

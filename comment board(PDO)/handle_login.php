@@ -11,7 +11,7 @@ if(empty($_POST['username']) || empty($_POST['password'])){
 $username = $_POST["username"];
 $password = $_POST["password"];
 
-$sql="SELECT * FROM users WHERE `username`=:username" ;
+$sql="SELECT * FROM users WHERE username=:username";
 $result = $conn->prepare($sql);
 $result->bindParam('username', $username, PDO::PARAM_STR);
 $result->execute();
