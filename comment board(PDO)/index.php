@@ -9,7 +9,6 @@ if(!empty($_SESSION['username'])){
     $username = $_SESSION['username'];
     $user = getUserFromUsername($username);
 }
-//$pageNow = 1; //設定起始頁數
 $pageSize = 10; //每頁顯示五條留言
 
 if (!isset($_GET["page"])){ //假如$_GET["page"]未設置
@@ -41,7 +40,7 @@ if(!$result){
         <!-- Favicon-->
         <link rel="icon" type="image/x-icon" href="favicon.ico" />
         <!-- Core theme CSS (includes Bootstrap)-->
-        <link href="styles.css" rel="stylesheet" />
+        <link href="css/styles.css" rel="stylesheet" />
     </head>
     <body class="bodybackground">
         <!-- Responsive navbar-->
@@ -155,6 +154,6 @@ if(!$result){
         <!-- Bootstrap core JS-->
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
         <!-- Core theme JS-->
-        <script src="scripts.js"></script>
+        <script src="js/scripts.js"></script>
     </body>
 </html>

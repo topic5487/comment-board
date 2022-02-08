@@ -5,13 +5,17 @@
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
         <meta name="description" content="" />
         <meta name="author" content="" />
-        <title>Bare - Start Bootstrap Template</title>
+        <title>會員註冊</title>
         <!-- Favicon-->
         <link rel="icon" type="image/x-icon" href="favicon.ico" />
         <!-- Core theme CSS (includes Bootstrap)-->
-        <link href="styles.css" rel="stylesheet" />
+        <link href="css/styles.css" rel="stylesheet" />
     </head>
     <body class="bodybackground">
+        <script src="scripts.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+        <!-- Bootstrap core JS-->
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
         <!-- Responsive navbar-->
         <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
             <div class="container">
@@ -49,25 +53,58 @@
                 echo '<h2>' . $msg . '</h2>';
             }
             ?>
-            <form class="new_comment" method="POST" action="handle_register.php">
+            <form class="new_comment" method="POST" action="handle_register.php" onsubmit="return check_input()">
                 <div class="board_nickname">
-                    <span style="color:white;">暱稱：</span>
+                    <span class="text-danger">*</span>
+                    <span style="font-size:20px; color:white;">暱稱：</span>
                     <input type="text" name="nickname"/>
                 </div>
                 <div class="board_nickname">
-                    <span style="color:white;">帳號：</span>
-                    <input type="text" name="username"/>
+                    <span class="text-danger">*</span>
+                    <span style="font-size:20px; color:white;">帳號：</span>
+                    <input type="text" id="username" name="username"/>
+                    <span id="uname_response"></span>
                 </div>
                 <div class="board_nickname">
-                    <span style="color:white;">密碼：</span>
-                    <input type="password" name="password"/>
+                    <span class="text-danger">*</span>
+                    <span style="font-size:20px; color:white;">密碼：</span>
+                    <input type="password" id="upwd" name="password"/>
                 </div>
-                <input class="submit_btn" type="submit" />
+                <div class="board_nickname">
+                    <span class="text-danger">*</span>
+                    <span style="font-size:20px; color:white;">確認密碼：</span>
+                    <input type="password" id="cpwd" name="cpassword" onkeyup="checkpassword()"/>
+                    <span id="pwd_response"></span>
+                </div>
+                <div class="board_nickname">
+                    <span class="text-danger">*</span>
+                    <span style="font-size:20px; color:white;">E-MAIL：</span>
+                    <input type="email" name="email"/>
+                </div>
+                <span class="required_warning">* 為必填欄位，請填妥欄位資訊。 <br> </span>
+                <input class="submit_btn" id="submit" type="submit" />
+                <script>
+                    $(document).ready(function(){
+                    $("#username").keyup(function(){
+                        var username = $(this).val().trim(); 
+                        if(username != ''){
+                            $.ajax({
+                                url:'ajaxfile.php',
+                                type:'POST',
+                                data:{username:username},
+                                success:function(response){
+                    
+                                    // Show response
+                                    $("#uname_response").html(response);
+                                }
+                            });
+                        }else{
+                            $("#uname_response").html("");
+                        }
+                    });
+                });
+                </script>
             </form>
         </main>
-        <!-- Bootstrap core JS-->
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
-        <!-- Core theme JS-->
-        <script src="scripts.js"></script>
     </body>
 </html>
