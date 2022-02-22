@@ -58,7 +58,7 @@ if(!$result){
                         </li>
                         <?php //設定登入與否顯示註冊登入
                          if (!$username) { ?>
-                        <li class="nav-item"><a class="nav-link" href="login.php">登入</a>
+                        <li class="nav-item"><a class="nav-link" href="register.php">登入</a>
                         <?php } ?>
                         <?php //判斷是否顯示登出
                         if ($username) { ?>
@@ -72,7 +72,7 @@ if(!$result){
                                 <li><a class="dropdown-item" href="#">Another action</a></li>
                                 <li><hr class="dropdown-divider" /></li>
                                 <li><a class="dropdown-item" href="#">Something else here</a></li>
-                                <li><a class="dropdown-item" href="logout.php">登出</a></li>
+                                <li><a class="dropdown-item" onclick="return confirm('確定要登出嗎?');" href="logout.php">登出</a></li>
                             </ul>
                             <?php } ?>
                         </li>
@@ -117,7 +117,7 @@ if(!$result){
                         <!--//判斷是否為自己的留言 才顯示編輯刪除-->
                         <?php if ($row['username'] === $username) { ?>
                         <a class="update_comment" href="update_comment.php?id=<?php echo $row['id'] ?>">編輯</a>
-                        <a class="update_comment" href="handle_delete_comment.php?id=<?php echo $row['id'] ?>">刪除</a>
+                        <a class="update_comment" onclick="return confirm('是否確認刪除此留言');" href="handle_delete_comment.php?id=<?php echo $row['id'] ?>">刪除</a>
                         <?php } ?>
                         </div>
                         <p class="comment_user_content"><?php echo escape($row['content']) ?>

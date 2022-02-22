@@ -61,7 +61,7 @@ if(!$result){
                                 <li><a class="dropdown-item" href="#">Another action</a></li>
                                 <li><hr class="dropdown-divider" /></li>
                                 <li><a class="dropdown-item" href="#">Something else here</a></li>
-                                <li><a class="dropdown-item" href="logout.php">登出</a></li>
+                                <li><a class="dropdown-item" onclick="return confirm('確定要登出嗎?');" href="logout.php">登出</a></li>
                             </ul>
                             <?php } ?>
                         </li>

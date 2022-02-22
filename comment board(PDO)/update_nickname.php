@@ -1,5 +1,6 @@
 <?php
-session_start();
+//session_start();
+include 'check_nicknamekey.php';
 require_once("connect.php");
 require_once("utility.php");
 $username = NULL;
@@ -50,7 +51,7 @@ if(!empty($_SESSION['username'])){
                                 <li><a class="dropdown-item" href="#">Another action</a></li>
                                 <li><hr class="dropdown-divider" /></li>
                                 <li><a class="dropdown-item" href="#">Something else here</a></li>
-                                <li><a class="dropdown-item" href="logout.php">登出</a></li>
+                                <li><a class="dropdown-item" onclick="return confirm('確定要登出嗎?');" href="logout.php">登出</a></li>
                             </ul>
                             <?php } ?>
                         </li>
@@ -75,8 +76,8 @@ if(!empty($_SESSION['username'])){
             ?>
             <form class="new_comment" method="POST" action="handle_update_nickname.php">
                 <div class="board_nickname">
-                    <span style="color:white;">請輸入新暱稱：</span>
-                    <input type="text" name="new_nickname"/>
+                    <span class="updete_nickname">請輸入新暱稱：</span>
+                    <input class="input_nickname" type="text" name="new_nickname"/>
                 </div>
                 <input class="submit_btn" type="submit" />
             </form>

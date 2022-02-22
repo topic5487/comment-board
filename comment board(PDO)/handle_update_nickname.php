@@ -11,6 +11,8 @@ $statement->execute();
 
 
 if($statement){
+    //清除確認密碼SESSION並回首頁
+    unset($_SESSION['nicknamekey']);
     header('location:index.php');
 }else{
     echo "更改失敗" . $conn->errorInfo();

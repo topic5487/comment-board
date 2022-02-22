@@ -4,7 +4,11 @@ require_once("connect.php");
 require_once("utility.php");
 
 if(empty($_POST['username']) || empty($_POST['password'])){
-    header("Location: login.php?errcode=1");
+    print "<script language=
+    \"JavaScript\">alert
+    (\"資料不得為空\");
+    location.href='register.php';
+    </script>";
     die();
 }
 
@@ -20,7 +24,11 @@ $count = $result->rowCount();
 
 //如果查無使用者
 if($count === 0){
-    header("Location: login.php?errcode=2");
+    print "<script language=
+    \"JavaScript\">alert
+    (\"帳號或密碼錯誤\");
+    location.href='register.php';
+    </script>";
     exit();
 }
 //如果查有使用者
@@ -29,7 +37,11 @@ if(password_verify($password, $row['password'])){
     $_SESSION['username'] = $username;
     header("Location: index.php");
 }   else {
-        header("Location: login.php?errcode=2");
+        print "<script language=\"JavaScript\">
+        alert(\"帳號或密碼錯誤\");
+        location.href='register.php';
+        </script>";
+        exit();
     }
     
 ?>

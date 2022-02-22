@@ -2,8 +2,12 @@
 session_start();
 require_once("connect.php");
 if(empty($_POST['nickname']) || empty($_POST['password']) || empty($_POST['username']) || empty($_POST['email']) ){
-    header("Location:register.php?errcode=1");
-    die("資料不齊");
+    print "<script language=
+    \"JavaScript\">alert
+    (\"資料不齊\");
+    location.href='register.php';
+    </script>";
+    die();
 }
 
 $nickname = $_POST["nickname"];

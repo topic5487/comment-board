@@ -1,16 +1,3 @@
-/*function $(id){
-    return document.getElementById(id)
-}
-
-function check_pwd(){
-    var boo=$('upwd').value==$('cpwd').value;
-    if (boo) {
-        return true;
-    }else{
-        alert('密碼不一致')
-    }
-}*/
-
 function checkpassword() {
     var password = document.getElementById("upwd").value;
     var repassword = document.getElementById("cpwd").value;
@@ -26,7 +13,7 @@ function checkpassword() {
 }
 
 function check_input() {
-    // 檢查登入帳號是否有特殊字元
+    //檢查註冊帳號是否有特殊字元
     var re = /[^a-zA-Z0-9.-_]/;
     var okname = re.exec ( document.getElementById("username").value);
     if ( okname ) {
@@ -34,4 +21,12 @@ function check_input() {
             document.getElementById("username").focus();
             return false;
     }
+    //檢查密碼長度是否正確
+    var pw1 = document.getElementById("upwd");
+    if ( pw1.value.length < 5 ) {
+            window.alert ( "密碼長度必須要大於 5 個字元以上" );
+            document.getElementById("upwd").focus();
+            return false;
+    }
+
 }

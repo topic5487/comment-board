@@ -4,7 +4,11 @@ require_once("connect.php");
 require_once("utility.php");
 
 if(empty($_POST['password'])){
-    header("Location: check_password.php?errcode=1");
+    print "<script language=
+    \"JavaScript\">alert
+    (\"資料不得為空\");
+    location.href='check_password.php';
+    </script>";
     die();
 }
 
@@ -15,8 +19,16 @@ $statement->execute();
 $result = $statement->fetch(PDO::FETCH_ASSOC);
 print_r($result);
 if(password_verify($password, $result['password'])) {
+    //session_start();
+    $_SESSION["nicknamekey"] = $password;
     header("Location:update_nickname.php");
+
 } else {
-    header("Location: check_password.php?errcode=2");
+    print "<script language=
+    \"JavaScript\">alert
+    (\"密碼錯誤\");
+    location.href='check_password.php';
+    </script>";
+    exit();
 }
 ?>

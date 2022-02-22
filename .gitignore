@@ -1,1 +1,3 @@
 connect.php
+PHPMailer
+send_register_mail.php
