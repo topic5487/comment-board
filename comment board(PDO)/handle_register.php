@@ -1,6 +1,7 @@
 <?php
 session_start();
 require_once("connect.php");
+//檢查是否輸入
 if(empty($_POST['nickname']) || empty($_POST['password']) || empty($_POST['username']) || empty($_POST['email']) ){
     print "<script language=
     \"JavaScript\">alert
@@ -21,15 +22,26 @@ $statement->bindParam(":nickname", $nickname, PDO::PARAM_STR);
 $statement->bindParam(":username", $username, PDO::PARAM_STR);
 $statement->bindParam(":password", $password, PDO::PARAM_STR);
 $statement->bindParam(":email", $email, PDO::PARAM_STR);
-$result=$statement->execute();
 
-if(!$result){
-    $code=$conn->errno;
-    if($code === 1062){
-        header('Location: register.php?errcode=2');
+try {$result=$statement->execute();
+}catch (PDOException $e) {
+    if ($e->errorInfo[1] == 1062) {
+        print "<script language=
+        \"JavaScript\">alert
+        (\"資料已被註冊\");
+        location.href='register.php';
+        </script>";
+        die();
+    } else {
+        print "<script language=
+        \"JavaScript\">alert
+        (\"預料外錯誤\");
+        location.href='register.php';
+        </script>";
+        die();
     }
-    die($conn->error);
-}
+ }
+
 
 //註冊完成即登入
 $_SESSION['username'] = $username;

@@ -2,7 +2,7 @@
 session_start();
 require_once("connect.php");
 require_once("utility.php");
-
+//檢查是否輸入
 if(empty($_POST['username']) || empty($_POST['password'])){
     print "<script language=
     \"JavaScript\">alert

@@ -40,19 +40,6 @@
     </div>
 </nav>
 <!-- Page content-->
-        <?php 
-        //判斷顯示資料不齊全
-        if(!empty($_GET['errcode'])){
-            $code=$_GET['errcode'];
-            $msg='error';
-            if($code === '1'){
-                $msg = "資料不齊全";
-            }else if($code === '2'){
-                $msg = "此帳號已被註冊";
-            }
-            echo '<h2>' . $msg . '</h2>';
-        }
-        ?>
         <div class="form">
             <ul class="tab-group">
                 <li class="tab active"><a href="#signup">註冊</a></li>
@@ -132,7 +119,11 @@
         </div><!-- tab-content -->
 
     </div> <!-- /form -->
+    <script src='js/jquery.min.js'></script>
+    <script src="js/index.js"></script>
+    <script src="js/scripts.js"></script>
                 <script>
+                    //檢查username是否重複
                     $(document).ready(function(){
                     $("#username").keyup(function(){
                         var username = $(this).val().trim(); 
@@ -142,9 +133,15 @@
                                 type:'POST',
                                 data:{username:username},
                                 success:function(response){
-                    
-                                    // Show response
-                                    $("#uname_response").html(response);
+                                    if(response == true){
+                                        //如果重複則禁用submit
+                                        $("#submit").prop("disabled", true);
+                                        // Show response
+                                        $("#uname_response").html("<span style='font-weight:bold; font-size:20px; color:#E62719;'>此帳號已被使用</span>");
+                                }else{
+                                    $("#submit").prop("disabled", false);
+                                    $("#uname_response").html("<span style='font-weight:bold; font-size:20px; color:white;'>此帳號可用</span>");
+                                    }
                                 }
                             });
                         }else{
@@ -152,7 +149,33 @@
                         }
                     });
                 })
-
+                //檢查email是否重複
+                $(document).ready(function(){
+                    $("#email").keyup(function(){
+                        var email = $(this).val().trim(); 
+                        if(email != ''){
+                            $.ajax({
+                                url:'ajax_checkemail.php',
+                                type:'POST',
+                                data:{email:email},
+                                success:function(response){
+                                    if(response == true){
+                                        //如果重複則禁用submit
+                                        $("#submit").prop("disabled", true);
+                                        // Show response
+                                        $("#email_response").html("<span style='font-weight:bold; font-size:20px; color:#E62719;'>此信箱已被使用</span>");
+                                    }else{
+                                        $("#submit").prop("disabled", false);
+                                        $("#email_response").html("<span> </span>");
+                                    }
+                                }
+                            });
+                        }else{
+                            $("#email_response").html("");
+                        }
+                    });
+                })
+                //發送email註冊信
                 $(document).on('click', '#submit', function(){
                     var username = $('#username').val();
                     var email = $('#email').val();
@@ -161,13 +184,10 @@
                         type:'POST',
                         data:{username:$("#username").val(), email:$("#email").val()},
                         success:function(res){
-                            $('#email_response').show().html(res);
+                            //$('#email_response').show().html(res);
                         }
                     });
                 });
                 </script>
-        <script src='js/jquery.min.js'></script>
-        <script src="js/index.js"></script>
-        <script src="js/scripts.js"></script>
     </body>
 </html>
