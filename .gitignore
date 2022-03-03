@@ -1,3 +1,4 @@
 connect.php
 PHPMailer
 send_register_mail.php
+send_restpwd_mail.php

@@ -109,7 +109,7 @@
                         <input class="register" type="password" name="password" required autocomplete="off" />
                     </div>
 
-                    <p class="forgot"><a href="#">忘記密碼?</a></p>
+                    <p class="forgot"><a href="forget.php">忘記密碼?</a></p>
 
                     <button class="button button-block">登入</button>
 

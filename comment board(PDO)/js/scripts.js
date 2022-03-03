@@ -30,3 +30,14 @@ function check_input() {
     }
 
 }
+
+function check_restpwd() {
+    //檢查密碼長度是否正確
+    var pw1 = document.getElementById("upwd");
+    if ( pw1.value.length < 5 ) {
+            window.alert ( "密碼長度必須要大於 5 個字元以上" );
+            document.getElementById("upwd").focus();
+            return false;
+    }
+
+}
