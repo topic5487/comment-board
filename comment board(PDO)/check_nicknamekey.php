@@ -4,7 +4,7 @@ session_start();
 if(!isset($_SESSION["username"])){
 print "<script language=\"JavaScript\">
 alert(\"請先登入\");
-location.href='index.php';
+location.href='register.php';
 </script>";
 }elseif(!isset($_SESSION["nicknamekey"])){
     //檢查是否已通過密碼確認

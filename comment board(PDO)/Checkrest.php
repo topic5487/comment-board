@@ -1,12 +1,13 @@
 <?php
 require_once("connect.php");
+require_once("utility.php");
 echo '<link rel="icon" type="image/x-icon" href="favicon.ico" />';
 echo '<link href="css/styles.css" type="text/css" rel="stylesheet">';
 echo '<link href="https://fonts.googleapis.com/css?family=Titillium+Web:400,300,600" rel="stylesheet" type="text/css">';
 echo '<link href="css/normalize.min.css" type="text/css" rel="stylesheet">';
 
-$token = stripslashes(trim($_GET['token']));
-$email = stripslashes(trim($_GET['email']));
+$token = $_GET['token'];
+$email = $_GET['email'];
 
 $sql = "SELECT * FROM users WHERE email=:email";
 $stmt = $conn->prepare($sql);

@@ -18,11 +18,11 @@ if (!isset($_GET["page"])){ //假如$_GET["page"]未設置
 }
 $pageStart = ($pageNow - 1) * $pageSize; //每一頁開始的資料序號
 
-$statement = $conn->prepare("SELECT C.id as id, C.content as content, C.created_at as created_at, U.nickname as nickname, U.username as username FROM comments as C left join users as U on C.user_id = U.username WHERE C.deleted_date IS NULL  ORDER BY C.id DESC LIMIT :pageSize OFFSET :pageStart");
+$stmt = $conn->prepare("SELECT C.id as id, C.content as content, C.created_at as created_at, U.nickname as nickname, U.username as username FROM comments as C left join users as U on C.user_id = U.username WHERE C.deleted_date IS NULL  ORDER BY C.id DESC LIMIT :pageSize OFFSET :pageStart");
 
-$statement->bindParam(':pageSize', $pageSize, PDO::PARAM_INT);
-$statement->bindParam(':pageStart', $pageStart, PDO::PARAM_INT);
-$result = $statement->execute();
+$stmt->bindParam(':pageSize', $pageSize, PDO::PARAM_INT);
+$stmt->bindParam(':pageStart', $pageStart, PDO::PARAM_INT);
+$result = $stmt->execute();
 
 if(!$result){
     die($conn->errorInfo());
@@ -36,7 +36,7 @@ if(!$result){
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
         <meta name="description" content="" />
         <meta name="author" content="" />
-        <title>Bare - Start Bootstrap Template</title>
+        <title>留言板</title>
         <!-- Favicon-->
         <link rel="icon" type="image/x-icon" href="favicon.ico" />
         <!-- Core theme CSS (includes Bootstrap)-->
@@ -63,15 +63,13 @@ if(!$result){
                         <?php //判斷是否顯示登出
                         if ($username) { ?>
                         <h3 class="wellcomehello">你好! <?php 
-                        echo $user['nickname'] ?> </h3>
+                        echo escape($user['nickname']) ?> </h3>
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" 
                             data-bs-toggle="dropdown" aria-expanded="false"> </a>
                             <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
                                 <li><a class="dropdown-item" href="check_password.php">更改暱稱</a></li>
-                                <li><a class="dropdown-item" href="#">Another action</a></li>
                                 <li><hr class="dropdown-divider" /></li>
-                                <li><a class="dropdown-item" href="#">Something else here</a></li>
                                 <li><a class="dropdown-item" onclick="return confirm('確定要登出嗎?');" href="logout.php">登出</a></li>
                             </ul>
                             <?php } ?>
@@ -82,17 +80,6 @@ if(!$result){
         </nav>
         <!-- Page content-->
         <main class="board">
-            <?php 
-            //判斷顯示資料不齊全
-            if(!empty($_GET['errcode'])){
-                $code=$_GET['errcode'];
-                $msg='error';
-                if($code === '1'){
-                    $msg = "資料不齊全";
-                }
-                echo '<h2>' . $msg . '</h2>';
-            }
-            ?>
             <?php //設定登入才能留言
             if ($username) { ?>
             <form class="new_comment" method="POST" action="handle_add_comment.php">
@@ -105,19 +92,19 @@ if(!$result){
             <div class="board_hr"></div>
             <section>
                 <?php
-                while($row = $statement->fetch(PDO::FETCH_ASSOC)){
+                while($row = $stmt->fetch(PDO::FETCH_ASSOC)){
                 ?>
                 <div class="comment_user">
                     <div class="comment_user_avater">
                     </div>
                     <div class="comment_user_body">
                         <div class="comment_user_info">
-                        <span class="comment_author"><?php echo $row['nickname'] ?></span>
-                        <span><?php echo $row['created_at'] ?></span>
+                        <span class="comment_author"><?php echo escape($row['nickname']) ?></span>
+                        <span><?php echo escape($row['created_at']) ?></span>
                         <!--//判斷是否為自己的留言 才顯示編輯刪除-->
                         <?php if ($row['username'] === $username) { ?>
-                        <a class="update_comment" href="update_comment.php?id=<?php echo $row['id'] ?>">編輯</a>
-                        <a class="update_comment" onclick="return confirm('是否確認刪除此留言');" href="handle_delete_comment.php?id=<?php echo $row['id'] ?>">刪除</a>
+                        <a class="update_comment" href="update_comment.php?id=<?php echo escape($row['id']) ?>">編輯</a>
+                        <a class="update_comment" onclick="return confirm('是否確認刪除此留言');" href="handle_delete_comment.php?id=<?php echo escape($row['id']) ?>">刪除</a>
                         <?php } ?>
                         </div>
                         <p class="comment_user_content"><?php echo escape($row['content']) ?>
@@ -127,9 +114,9 @@ if(!$result){
             </section>
             <div>
             <?php
-                $statement = $conn->prepare('SELECT count(id) AS count FROM comments WHERE deleted_date IS NULL');
-                $result = $statement->execute();
-                $row = $statement->fetch(PDO::FETCH_ASSOC);
+                $stmt = $conn->prepare('SELECT count(id) AS count FROM comments WHERE deleted_date IS NULL');
+                $result = $stmt->execute();
+                $row = $stmt->fetch(PDO::FETCH_ASSOC);
                 $count=$row['count'];
                 $pages = ceil($count / $pageSize);
             ?>

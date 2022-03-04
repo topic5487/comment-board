@@ -5,18 +5,22 @@ $user_id = $_SESSION['username'];
 $content = $_POST['content'];
 $id = $_POST['id'];
 if(empty($_POST['content'])){
-    header('Location: update_comment.php?errcode=1&id='.$_POST['id']);
-    die("資料不齊全");
+    print "<script language=
+        \"JavaScript\">alert
+        (\"請輸入內容\");
+        location.href='update_comment.php?id=" . $id . "';
+        </script>";
+        die();
 }
 $sql = "UPDATE comments SET `content`=:content WHERE id =:id AND user_id = :user_id";
-$statement = $conn->prepare($sql);
-$statement->bindParam('user_id', $user_id, PDO::PARAM_STR);
-$statement->bindParam('content', $content, PDO::PARAM_STR);
-$statement->bindParam('id', $id, PDO::PARAM_INT);
-$statement->execute();
+$stmt = $conn->prepare($sql);
+$stmt->bindParam('user_id', $user_id, PDO::PARAM_STR);
+$stmt->bindParam('content', $content, PDO::PARAM_STR);
+$stmt->bindParam('id', $id, PDO::PARAM_INT);
+$stmt->execute();
 
 
-if($statement){
+if($stmt){
     header('location:index.php');
 }
 ?>

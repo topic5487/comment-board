@@ -1,7 +1,7 @@
 <?php
 require_once("connect.php");
 require_once("send_restpwd_mail.php");
-$email = stripslashes(trim($_POST['mail']));
+$email = $_POST['mail'];
 
 $sql="SELECT * FROM users WHERE email=:email";
 $stmt = $conn->prepare($sql);

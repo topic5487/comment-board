@@ -17,13 +17,13 @@ $password = password_hash($_POST['password'], PASSWORD_DEFAULT);
 $email = $_POST['email'];
 
 $sql="INSERT INTO users(nickname, username, password, email) VALUES (:nickname, :username, :password, :email)";
-$statement = $conn->prepare($sql);
-$statement->bindParam(":nickname", $nickname, PDO::PARAM_STR);
-$statement->bindParam(":username", $username, PDO::PARAM_STR);
-$statement->bindParam(":password", $password, PDO::PARAM_STR);
-$statement->bindParam(":email", $email, PDO::PARAM_STR);
+$stmt = $conn->prepare($sql);
+$stmt->bindParam(":nickname", $nickname, PDO::PARAM_STR);
+$stmt->bindParam(":username", $username, PDO::PARAM_STR);
+$stmt->bindParam(":password", $password, PDO::PARAM_STR);
+$stmt->bindParam(":email", $email, PDO::PARAM_STR);
 
-try {$result=$statement->execute();
+try {$result=$stmt->execute();
 }catch (PDOException $e) {
     if ($e->errorInfo[1] == 1062) {
         print "<script language=

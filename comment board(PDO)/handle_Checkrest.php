@@ -1,8 +1,8 @@
 <?php
 require_once("connect.php");
 if(isset($_POST["email"]) && isset($_POST["action"]) && ($_POST["action"]=="update")){
-    $upwd = stripslashes(trim($_POST['password']));
-    $cpwd = stripslashes(trim($_POST['repwd']));
+    $upwd = $_POST['password'];
+    $cpwd = $_POST['repwd'];
     $email = $_POST["email"];
         if($upwd != $cpwd){
             print "<script language=

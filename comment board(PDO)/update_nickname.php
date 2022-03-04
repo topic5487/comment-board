@@ -16,7 +16,7 @@ if(!empty($_SESSION['username'])){
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
         <meta name="description" content="" />
         <meta name="author" content="" />
-        <title>Bare - Start Bootstrap Template</title>
+        <title>編輯暱稱</title>
         <!-- Favicon-->
         <link rel="icon" type="image/x-icon" href="favicon.ico" />
         <!-- Core theme CSS (includes Bootstrap)-->
@@ -42,15 +42,13 @@ if(!empty($_SESSION['username'])){
                         <?php } ?>
                         <?php //判斷是否顯示登出
                         if ($username) { ?>
-                        <h3 class="wellcomehello">你好! <?php echo $user['nickname'] ?> </h3>
+                        <h3 class="wellcomehello">你好! <?php echo escape($user['nickname']) ?> </h3>
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" 
                             data-bs-toggle="dropdown" aria-expanded="false"> </a>
                             <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
                                 <li><a class="dropdown-item" href="check_password.php">更改暱稱</a></li>
-                                <li><a class="dropdown-item" href="#">Another action</a></li>
                                 <li><hr class="dropdown-divider" /></li>
-                                <li><a class="dropdown-item" href="#">Something else here</a></li>
                                 <li><a class="dropdown-item" onclick="return confirm('確定要登出嗎?');" href="logout.php">登出</a></li>
                             </ul>
                             <?php } ?>
@@ -61,19 +59,6 @@ if(!empty($_SESSION['username'])){
         </nav>
         <!-- Page content-->
         <main class="register_board">
-            <?php 
-            //判斷顯示資料不齊全
-            if(!empty($_GET['errcode'])){
-                $code=$_GET['errcode'];
-                $msg='error';
-                if($code === '1'){
-                    $msg = "資料不齊全";
-                }else if($code === '2'){
-                    $msg = "此帳號已被註冊";
-                }
-                echo '<h2>' . $msg . '</h2>';
-            }
-            ?>
             <form class="new_comment" method="POST" action="handle_update_nickname.php">
                 <div class="board_nickname">
                     <span class="updete_nickname">請輸入新暱稱：</span>
